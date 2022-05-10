@@ -1,0 +1,26 @@
+{
+    "compilerOptions": {
+        "jsx": "react",
+        "target": "ES2022",
+        "module": "ESNext",
+        "baseUrl": "./",
+        "paths": {
+            "*": ["./src/*"]
+        },
+        "lib": ["ES6", "DOM", "DOM.Iterable"],
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "outDir": "./dist",
+        "esModuleInterop": true,
+        "moduleResolution": "node",
+        "forceConsistentCasingInFileNames": true,
+        "strict": true,
+        "skipLibCheck": true,
+        "noEmit": true,
+        "resolveJsonModule": true,
+        "noFallthroughCasesInSwitch": true,
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["./**/*.ts", "yy./**/*.js", "./.*.js", "./**/*.tsx"],
+    "exclude": ["node_modules", "dist"]
+}
