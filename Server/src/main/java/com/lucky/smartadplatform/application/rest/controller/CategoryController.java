@@ -73,10 +73,10 @@ public class CategoryController {
     public ResponseEntity<StatusResponse> deleteCategory(@PathVariable("id") Long id) {
         var response = new StatusResponse();
 
-        throw new UnsupportedOperationException("Not implemented");
+        categoryService.deleteCategory(id);
 
-        // response.setMessage("Category deleted successfully.");
-        // return new ResponseEntity<>(response, HttpStatus.OK);
+        response.setMessage("Category deleted successfully.");
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
 }
