@@ -49,11 +49,11 @@ public class TestUtils {
     }
 
     public static JpaImage getTestImage1(JpaUser owner) {
-        return new JpaImage(1L, "tshirt.jpg", "Clothing tops", owner, null);
+        return new JpaImage(1L, "tshirt.jpg", "Clothing tops", 95.0, owner, null);
     }
 
     public static JpaImage getTestImage2(JpaUser owner) {
-        return new JpaImage(2L, "watch.jpg", "Clothing", owner, null);
+        return new JpaImage(2L, "watch.jpg", "Clothing", 85.2, owner, null);
     }
 
     public static JpaItem getTestItem1(JpaUser owner, JpaCategory category) {

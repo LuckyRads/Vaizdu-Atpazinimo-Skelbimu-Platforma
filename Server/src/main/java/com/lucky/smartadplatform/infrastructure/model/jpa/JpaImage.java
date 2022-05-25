@@ -31,6 +31,8 @@ public class JpaImage {
 
     private String category;
 
+    private Double predictionConfidence;
+
     @NotNull
     @ManyToOne
     @JoinColumn(name = "owner_id")

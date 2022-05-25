@@ -25,6 +25,7 @@ export type ImageResponse = {
     name: string;
     data: string;
     category: string;
+    predictionConfidence: number;
 };
 
 export type CategoryDto = {

@@ -39,9 +39,61 @@ export default function ItemModification(props: LoaderType): ReactElement {
     const [isItemLoaded, setIsItemLoaded] = useState(false);
     const [isCurrentUserOwner, setIsCurrentUserOwner] = useState(false);
     const [isModification, setIsModification] = useState(false);
+    const [isCategoryUnlocked, setIsCategoryUnlocked] = useState(false);
 
     useEffect(() => {
-        if (id === undefined) setCategory(images[0]?.category);
+        const getMostOccurringCategory = (): {
+            category: string | null;
+            predictionConfidence: number;
+        } | null => {
+            const predictedCategoryMap = new Map<string, number>();
+            let mostFrequentCategory = images[0].category;
+            let predictionConfidence = images[0].predictionConfidence;
+            let maxCategoryEntryCount = 1;
+            for (const image of images) {
+                if (!predictedCategoryMap.get(image.category))
+                    predictedCategoryMap.set(image.category, 1);
+                else {
+                    const currentImgCatCnt = predictedCategoryMap.get(
+                        image.category
+                    );
+                    if (currentImgCatCnt !== undefined)
+                        predictedCategoryMap.set(
+                            image.category,
+                            currentImgCatCnt + 1
+                        );
+                }
+                const count = predictedCategoryMap.get(image.category);
+                if (count !== undefined && count >= maxCategoryEntryCount) {
+                    mostFrequentCategory = image.category;
+                    predictionConfidence = image.predictionConfidence;
+                    maxCategoryEntryCount = count;
+                }
+            }
+
+            return { category: mostFrequentCategory, predictionConfidence };
+        };
+        if (images.length === 0) return;
+        if (id === undefined) {
+            const predictedCategory = getMostOccurringCategory();
+            if (
+                predictedCategory !== null &&
+                predictedCategory.category !== null
+            ) {
+                setCategory(predictedCategory.category);
+                // Confidence threshold to consider unlocking the category.
+                if (predictedCategory.predictionConfidence > 70) {
+                    setIsCategoryUnlocked(false);
+                } else {
+                    setIsCategoryUnlocked(true);
+                }
+            } else {
+                setIsCategoryUnlocked(true);
+                toast.warning(
+                    'Please provide more images in order for the category recognition to be more accurate.'
+                );
+            }
+        }
     }, [id, images]);
 
     useEffect(() => {
@@ -195,10 +247,12 @@ export default function ItemModification(props: LoaderType): ReactElement {
                     </FlexFormControl>
                     <FlexFormControl
                         sx={{ flexGrow: 1, width: '200px' }}
-                        disabled={!isCurrentUserOwner}>
+                        disabled={!isCurrentUserOwner || !isCategoryUnlocked}>
                         <InputLabel id="select-category">Category</InputLabel>
                         <Select
-                            disabled={!isCurrentUserOwner}
+                            disabled={
+                                !isCurrentUserOwner || !isCategoryUnlocked
+                            }
                             labelId="select-category"
                             id="category-select"
                             value={category}

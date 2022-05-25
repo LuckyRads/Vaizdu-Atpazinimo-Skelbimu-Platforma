@@ -55,6 +55,8 @@ public class ImageService {
     private RecognitionServiceUtil recognitionServiceUtil;
 
     public Image saveImage(MultipartFile imageFile, String owner) throws IOException, NullPointerException {
+        log.debug("Saving image.");
+
         JpaUser jpaUser = userRepository.findByUsername(owner).orElseThrow(NullPointerException::new);
         User user = modelMapper.map(jpaUser, User.class);
 
@@ -76,12 +78,16 @@ public class ImageService {
             String categoryString = recognitionServiceUtil
                     .getCategoryNameFromPredicted(predictionResults.get(0).getLabel());
             image.setCategory(categoryString);
+            image.setPredictionConfidence(predictionResults.get(0).getScore());
             Optional<JpaImage> optionalJpaImage = imageRepository.findById(image.getId());
             if (optionalJpaImage.isPresent()) {
                 JpaImage jpaImage = optionalJpaImage.get();
                 jpaImage.setCategory(categoryString);
+                jpaImage.setPredictionConfidence(predictionResults.get(0).getScore());
                 imageRepository.save(jpaImage);
             }
+            log.info("Predicted category {} for image {} with confidence {}.", categoryString, image.getName(),
+                    predictionResults.get(0).getScore());
         }
     }
 

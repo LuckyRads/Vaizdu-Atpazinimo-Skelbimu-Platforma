@@ -23,6 +23,8 @@ public class ImageDto {
 
     private String category;
 
+    private Double predictionConfidence;
+
     private String owner;
 
     private Long item;
@@ -33,6 +35,7 @@ public class ImageDto {
         if (image.getData() != null)
             this.data = Base64.getEncoder().encodeToString(image.getData());
         this.category = image.getCategory();
+        this.predictionConfidence = image.getPredictionConfidence();
         if (image.getOwner() != null)
             this.owner = image.getOwner().getUsername();
         if (image.getItem() != null)

@@ -120,7 +120,7 @@ public class ItemServiceUnitTests {
         List<Long> imageIds = new ArrayList<>(Arrays.asList(1L));
 
         List<JpaImage> userImages = new ArrayList<>();
-        userImages.add(new JpaImage(1L, "tshirt.jpg", "Clothing tops", userOwner, null));
+        userImages.add(new JpaImage(1L, "tshirt.jpg", "Clothing tops", 98.9, userOwner, null));
 
         Mockito.when(categoryRepository.findByName("Clothing tops")).thenReturn(Optional.of(itemCategory));
         Mockito.when(userRepository.findByUsername(ownerName)).thenReturn(Optional.of(userOwner));
@@ -160,7 +160,8 @@ public class ItemServiceUnitTests {
         Long updatedImageId = 1L;
         String updatedImageName = "tshirt.jpg";
         String updatedImageCategory = "Clothing tops";
-        updatedImages.add(new ImageDto(updatedImageId, updatedImageName, null, updatedImageCategory, ownerName, id));
+        updatedImages
+                .add(new ImageDto(updatedImageId, updatedImageName, null, updatedImageCategory, 94.1, ownerName, id));
 
         ItemDto itemDto = new ItemDto(id, updatedName, updatedPrice, updatedDesc, updatedContNum, updatedImages,
                 updatedCategory, ownerName);
@@ -215,8 +216,8 @@ public class ItemServiceUnitTests {
         assertEquals(retrievedItems.get(0).getCategory().getName(), categoryClothing.getName());
         assertEquals(retrievedItems.get(1).getOwner().getUsername(), user1.getUsername());
         assertEquals(retrievedItems.get(0).getOwner().getUsername(), user2.getUsername());
-        assertEquals(retrievedItems.get(1).getImages().get(0).getName(), "tshirt.jpg");
-        assertEquals(retrievedItems.get(0).getImages().get(0).getName(), "watch.jpg");
+        assertEquals("tshirt.jpg", retrievedItems.get(1).getImages().get(0).getName());
+        assertEquals("watch.jpg", retrievedItems.get(0).getImages().get(0).getName());
     }
 
     @Test
@@ -224,9 +225,7 @@ public class ItemServiceUnitTests {
         prepareCategories();
         prepareUsers();
         JpaUser item1Owner = user1;
-        JpaUser item2Owner = user2;
         JpaItem item1 = getPreparedItem1(item1Owner, categoryClothingTops);
-        JpaItem item2 = getPreparedItem2(item2Owner, categoryClothing);
 
         Mockito.when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryAll));
 
@@ -245,9 +244,7 @@ public class ItemServiceUnitTests {
         prepareCategories();
         prepareUsers();
         JpaUser item1Owner = user1;
-        JpaUser item2Owner = user2;
         JpaItem item1 = getPreparedItem1(item1Owner, categoryClothingTops);
-        JpaItem item2 = getPreparedItem2(item2Owner, categoryClothing);
 
         Mockito.when(categoryRepository.findById(1L)).thenReturn(Optional.of(categoryAll));
 

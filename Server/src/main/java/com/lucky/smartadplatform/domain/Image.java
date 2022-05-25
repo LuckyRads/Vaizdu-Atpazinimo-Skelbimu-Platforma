@@ -19,6 +19,8 @@ public class Image {
 
     private String category;
 
+    private Double predictionConfidence;
+
     private User owner;
 
     private Item item;
@@ -28,25 +30,6 @@ public class Image {
         this.data = data;
         this.owner = owner;
     }
-
-    // public void setGeneratedName(String name) {
-    // if (name != null) {
-    // List<String> splitName = Arrays.asList(name.split(Pattern.quote(".")));
-    // if (splitName.size() > 1) {
-    // this.name = String.join("", splitName.subList(0, splitName.size() - 1)) + "-"
-    // + UUID.randomUUID().toString().substring(0, 5);
-    // } else {
-    // this.name = name + "-" + UUID.randomUUID().toString().substring(0, 5);
-    // }
-    // }
-    // }
-
-    // public void regenerateName() {
-    // if (this.name != null) {
-    // this.name = this.name.substring(0, this.name.length() - 5);
-    // setGeneratedName(name);
-    // }
-    // }
 
     public ImageDirectoryType getImageDirectoryType() {
         if (item == null && owner != null) {
